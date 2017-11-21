@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 /**
  * Created by Sean O on 11/23/2016.
  */
 @Autonomous(name="TestRun6", group="Test")
+@Disabled
 public class    TestRun6 extends AutonomousBase {
     @Override
     public void gameState() {

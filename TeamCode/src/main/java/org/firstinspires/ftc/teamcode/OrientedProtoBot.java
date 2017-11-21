@@ -5,16 +5,19 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@TeleOp(name="Oriented Protobot Tank", group="Protobot")
-class OrientedProtoBot extends OpMode {
+@TeleOp(name="OrientedProtobBot Tank", group="Protobot")
 
-    // State used for updating telemetry
+public class OrientedProtoBot extends OpMode    {
+
+    ElapsedTime runtime = new ElapsedTime();
+    //hello
     private Orientation angles;
     private DcMotor motorFrontRight;
     private DcMotor motorFrontLeft;
@@ -28,7 +31,8 @@ class OrientedProtoBot extends OpMode {
     private double right;
     private BNO055IMU imu;
 
-    public void init() {
+    public void init()
+    {
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backLeft");
@@ -39,22 +43,26 @@ class OrientedProtoBot extends OpMode {
         front = hardwareMap.dcMotor.get("front");
         left = 0.0;
         right = 1.0;
+        runtime.reset();
         BNO055IMU imu;
     }
 
-    public void loop() {
+    public void loop()
+    {
         double r = Math.hypot(gamepad1.right_stick_x, gamepad1.left_stick_y);
         double robotAngle = Math.atan2(gamepad1.right_stick_x, gamepad1.left_stick_y) - Math.PI / 4;
         double rightX = gamepad1.left_stick_x;
-        final double v1 = r * Math.cos(robotAngle) + rightX;
-        final double v2 = r * Math.sin(robotAngle) + rightX;
-        final double v3 = r * Math.sin(robotAngle) - rightX;
-        final double v4 = r * Math.cos(robotAngle) - rightX;
+        final double v1 = r * Math.cos(robotAngle) - rightX;
+        final double v2 = r * Math.sin(robotAngle) - rightX;
+        final double v3 = r * Math.cos(robotAngle) + rightX;
+        final double v4 = r * Math.sin(robotAngle) + rightX;
+
+        // This is a test change --
 
         motorFrontRight.setPower(v1);
         motorFrontLeft.setPower(v2);
-        motorBackRight.setPower(v3);
-        motorBackLeft.setPower(v4);
+        motorBackRight.setPower(-v3);
+        motorBackLeft.setPower(-v4);
 
         if (gamepad2.b) {
             if (left < 1.0 && right > 0.0) {
@@ -70,7 +78,6 @@ class OrientedProtoBot extends OpMode {
             }
             franny.setPosition(left);
             mobert.setPosition(right);
-        } else {
         }
 
         if (gamepad2.left_bumper) {
@@ -83,7 +90,6 @@ class OrientedProtoBot extends OpMode {
                 left -= .01;
             }
             franny.setPosition(left);
-        } else {
         }
 
         if (gamepad2.right_bumper) {
@@ -96,33 +102,34 @@ class OrientedProtoBot extends OpMode {
                 right += .01;
             }
             mobert.setPosition(right);
-        } else {
         }
 
         telemetry.addData("Left", left);
         telemetry.addData("Right", right);
 
-        if (gamepad1.left_stick_button) {
+        if (gamepad1.left_stick_button && runtime.seconds() > 0.3) {
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX,
                     AngleUnit.DEGREES);
-            final double v5 = r * Math.cos(robotAngle) + rightX + angles.firstAngle;
-            final double v6 = r * Math.sin(robotAngle) + rightX + angles.firstAngle;
-            final double v7 = r * Math.sin(robotAngle) + rightX + angles.firstAngle;
-            final double v8 = r * Math.cos(robotAngle) + rightX + angles.firstAngle;
+            final double v5 = r * Math.cos(robotAngle) - rightX + angles.firstAngle;
+            final double v6 = r * Math.sin(robotAngle) - rightX + angles.firstAngle;
+            final double v7 = r * Math.cos(robotAngle) + rightX + angles.firstAngle;
+            final double v8 = r * Math.sin(robotAngle) + rightX + angles.firstAngle;
 
             motorFrontRight.setPower(v5);
             motorFrontLeft.setPower(v6);
-            motorBackRight.setPower(v7);
-            motorBackLeft.setPower(v8);
+            motorBackRight.setPower(-v7);
+            motorBackLeft.setPower(-v8);
+
+            runtime.reset();
         }
 
         // top.setPower(gamepad2.right_stick_x * .5);
         // front.setPower(gamepad2.left_stick_x * .5);
 
         if (gamepad2.dpad_up) {
-            top.setPower(-0.45);
+            top.setPower(-0.3);
         } else if (gamepad2.dpad_down) {
-            top.setPower(0.45);
+            top.setPower(0.3);
         } else {
             top.setPower(0);
         }
@@ -130,9 +137,12 @@ class OrientedProtoBot extends OpMode {
         if (gamepad2.y) {
             front.setPower(-0.7);
         } else if (gamepad2.a) {
-            front.setPower(0.35);
+            front.setPower(0.7);
         } else {
             front.setPower(0);
         }
     }
 }
+
+
+

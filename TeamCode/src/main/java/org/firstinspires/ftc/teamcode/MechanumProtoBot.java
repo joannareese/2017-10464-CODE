@@ -61,8 +61,8 @@ public class MechanumProtoBot extends OpMode    {
 
         motorFrontRight.setPower(v1);
         motorFrontLeft.setPower(v2);
-        motorBackRight.setPower(v3);
-        motorBackLeft.setPower(v4);
+        motorBackRight.setPower(-v3);
+        motorBackLeft.setPower(-v4);
 
         if (gamepad2.b) {
             if (left < 1.0 && right > 0.0) {
@@ -117,8 +117,8 @@ public class MechanumProtoBot extends OpMode    {
 
             motorFrontRight.setPower(v5);
             motorFrontLeft.setPower(v6);
-            motorBackRight.setPower(v7);
-            motorBackLeft.setPower(v8);
+            motorBackRight.setPower(-v7);
+            motorBackLeft.setPower(-v8);
 
             runtime.reset();
         }
