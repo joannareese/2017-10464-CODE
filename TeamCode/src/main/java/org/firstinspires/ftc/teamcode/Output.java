@@ -52,8 +52,12 @@ public class Output extends OpMode    {
 
     public void loop()
     {
-        telemetry.addData("Motor degrees", motorBackLeft.getCurrentPosition());
+        telemetry.addData("Motor degrees1", motorBackLeft.getCurrentPosition());
         telemetry.addData("Color value blue", sensorColor.blue());
+        telemetry.addData("Motor degrees2", motorBackRight.getCurrentPosition());
+        telemetry.addData("Motor degrees3", motorFrontLeft.getCurrentPosition());
+        telemetry.addData("Motor degrees4", motorFrontRight.getCurrentPosition());
+
         //telemetry.addData(imu.getAngularOrientation().toAngleUnit());
     }
 }

@@ -106,7 +106,7 @@ public class RedCornerCopy extends OpMode {
         //super.gameState();
         if (!started) {
             started = true;
-            waitTime = System.currentTimeMillis() + 1000;
+            waitTime = System.currentTimeMillis() + 2000;
         }
         switch (gameState2) {
             case 0: //Start
@@ -121,43 +121,48 @@ public class RedCornerCopy extends OpMode {
                 break;
 
             case 1:
-                startDeg = motorBackLeft.getCurrentPosition();
+                startDeg = motorBackRight.getCurrentPosition();
                 if (sensorColor.red() > sensorColor.blue()) {
                     //motorBackLeft.setTargetPosition(1);
                     motorBackLeft.setPower(.6);
                     //motorFrontRight.setTargetPosition(1);
+                    motorFrontLeft.setPower(0.6);
+                    motorBackRight.setPower(-.6);
                     motorFrontRight.setPower(-.6);
                 } else {
 
                 //if (sensorColor.red() < sensorColor.blue()) {
                     //motorBackLeft.setTargetPosition(1);
-                    motorBackLeft.setPower(-.6);
+                    motorBackRight.setPower(.6);
                     //motorFrontRight.setTargetPosition(1);
                     motorFrontRight.setPower(.6);
+                    motorBackLeft.setPower(-.6);
+                    motorFrontLeft.setPower(-.6);
                 }
 
                 gameState2 = 2;
                 break;
 
             case 2:
-                if (Math.abs(startDeg - motorBackLeft.getCurrentPosition()) > 100) {
+                if (Math.abs(startDeg - motorBackRight.getCurrentPosition()) > 100) {
                     motorBackLeft.setPower(-motorBackLeft.getPower());
                     motorFrontRight.setPower(-motorFrontRight.getPower());
                     motorBackRight.setPower(-motorBackRight.getPower());
                     motorFrontLeft.setPower(-motorFrontLeft.getPower());
                     gameState2 = 3;
-                    startDeg = motorBackLeft.getCurrentPosition();
+                    startDeg = motorBackRight.getCurrentPosition();
                 }
                 break;
 
             case 3:
-                if (Math.abs(startDeg - motorBackLeft.getCurrentPosition()) > 100) {
+                if (Math.abs(startDeg - motorBackRight.getCurrentPosition()) > 100) {
                     motorBackLeft.setPower(0);
                     motorFrontRight.setPower(0);
                     motorBackRight.setPower(0);
                     motorFrontLeft.setPower(0);
                     gameState2 = 4;
-                    startDeg = motorBackLeft.getCurrentPosition();
+                    waitTime = System.currentTimeMillis()+3000;
+                    startDeg = motorBackRight.getCurrentPosition();
                 }
                 break;
 
@@ -196,10 +201,20 @@ public class RedCornerCopy extends OpMode {
                 else {
                     telemetry.addData("VuMark", "not visible");
                 }
+                if (waitTime <= System.currentTimeMillis()){
+                    gameState2 = 5;
+                    startDeg = motorBackRight.getCurrentPosition();
+                }
                 break;
 
+            case 5:
+                motorBackRight.setPower(0.5);
+                motorBackLeft.setPower(0.5);
+                motorFrontLeft.setPower(-0.5);
+                motorFrontRight.setPower(-0.5);
+
         }
-        telemetry.addData("Motor degrees", motorBackLeft.getCurrentPosition());
+        telemetry.addData("Motor degrees", motorBackRight.getCurrentPosition());
         telemetry.addData("Start degrees", startDeg);
         telemetry.addData("State", gameState2);
         telemetry.addData("Color value blue", sensorColor.blue());
@@ -208,4 +223,5 @@ public class RedCornerCopy extends OpMode {
     String format(OpenGLMatrix transformationMatrix) {
         return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
     }
+
 }
