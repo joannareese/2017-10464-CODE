@@ -126,7 +126,7 @@ public class RedCornerCopy extends OpMode {
                     //motorBackLeft.setTargetPosition(1);
                     motorBackLeft.setPower(.6);
                     //motorFrontRight.setTargetPosition(1);
-                    motorFrontLeft.setPower(0.6);
+                    motorFrontLeft.setPower(.6);
                     motorBackRight.setPower(-.6);
                     motorFrontRight.setPower(-.6);
                 } else {
