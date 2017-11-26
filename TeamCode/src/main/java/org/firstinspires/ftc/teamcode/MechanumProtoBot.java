@@ -49,20 +49,20 @@ public class MechanumProtoBot extends OpMode    {
 
     public void loop()
     {
-        double r = Math.hypot(gamepad1.right_stick_x, gamepad1.left_stick_y);
-        double robotAngle = Math.atan2(gamepad1.right_stick_x, gamepad1.left_stick_y) - Math.PI / 4;
+        double r = Math.hypot(-gamepad1.right_stick_x, -gamepad1.left_stick_y);
+        double robotAngle = Math.atan2(-gamepad1.right_stick_x, -gamepad1.left_stick_y) - Math.PI / 4;
         double rightX = gamepad1.left_stick_x;
-        final double v1 = r * Math.cos(robotAngle) - rightX;
-        final double v2 = r * Math.sin(robotAngle) - rightX;
-        final double v3 = r * Math.cos(robotAngle) + rightX;
-        final double v4 = r * Math.sin(robotAngle) + rightX;
+        final double v1 = r * Math.sin(robotAngle) + rightX;
+        final double v2 = r * Math.cos(robotAngle) + rightX;
+        final double v3 = r * Math.cos(robotAngle) - rightX;
+        final double v4 = r * Math.sin(robotAngle) - rightX;
 
         // This is a test change --
 
         motorFrontRight.setPower(v1);
         motorFrontLeft.setPower(v2);
-        motorBackRight.setPower(-v3);
-        motorBackLeft.setPower(-v4);
+        motorBackRight.setPower(v3);
+        motorBackLeft.setPower(v4);
 
         if (gamepad2.b) {
             if (left < 1.0 && right > 0.0) {
